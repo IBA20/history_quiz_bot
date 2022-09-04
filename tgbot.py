@@ -7,7 +7,6 @@ from telegram.ext import (
     CommandHandler, 
     MessageHandler, 
     Filters, 
-    RegexHandler, 
     ConversationHandler,
 )
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
