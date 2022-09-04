@@ -10,7 +10,7 @@
 
 ## Установка и запуск
 
-1. Клонируйтие данный репозиторий.
+1. Клонируйте данный репозиторий.
 2. Создайте следующие переменные окружения:  
 * TG_BOT_TOKEN - API ключ вашего телерам-бота. Создать бота и получить API ключ можно с помощью @BotFather.  
 * VK_TOKEN - API-ключ группы VK, [инструкция](https://pechenek.net/social-networks/vk/api-vk-poluchaem-klyuch-dostupa-token-gruppy/)
