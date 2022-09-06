@@ -41,16 +41,13 @@ def get_questions():
     return questions
 
 def is_answer_correct(correct_answer, user_answer):
-    # Проверка: ответ юзера соответствует одному из фрагментов из заглавных букв в правильном ответе
-    if user_answer.upper() in re.findall(r'[A-ZА-Я]{3,}', correct_answer):
-        return True
-    # Проверка: ответ юзера соответствует части правильного ответа до точки
-    if user_answer.lower() == correct_answer.split('.')[0].strip().lower():
-        return True
-    # Проверка: ответ юзера соответствует части правильного ответа до скобки
-    if user_answer.lower() == correct_answer.split('(')[0].strip().lower():
-        return True
-    # Проверка: ответ юзера соответствует началу  ответа до точки
-    if correct_answer.lower().startswith(user_answer.lower()) and len(user_answer) > 2:
-        return True
-    return False
+    return any(
+        # Проверка: ответ юзера соответствует одному из фрагментов из заглавных букв в правильном ответе
+        user_answer.upper() in re.findall(r'[A-ZА-Я]{3,}', correct_answer),
+        # Проверка: ответ юзера соответствует части правильного ответа до точки
+        user_answer.lower() == correct_answer.split('.')[0].strip().lower(),
+        # Проверка: ответ юзера соответствует части правильного ответа до скобки
+        user_answer.lower() == correct_answer.split('(')[0].strip().lower(),
+        # Проверка: ответ юзера соответствует началу  ответа до точки
+        correct_answer.lower().startswith(user_answer.lower()) and len(user_answer) > 2,
+    )
