@@ -2,6 +2,7 @@ import os
 import logging
 import vk_api as vk
 import redis
+import sys
 from random import choice
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
@@ -75,7 +76,10 @@ def handle_user_message(event, vk_api, questions, storage, keyboard):
 def main():
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
-    questions = get_questions()
+    if len(sys.argv) > 1:
+        questions = get_questions(sys.argv[1])
+    else:
+        questions = get_questions()
     if not questions:
         logger.error('Questions not found')
         return

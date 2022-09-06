@@ -1,6 +1,7 @@
 import logging
 import os
 import redis
+import sys
 
 from telegram.ext import (
     Updater, 
@@ -105,7 +106,10 @@ def main():
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
-    questions = get_questions()
+    if len(sys.argv) > 1:
+        questions = get_questions(sys.argv[1])
+    else:
+        questions = get_questions()
     if not questions:
         logger.error('Questions not found')
         return

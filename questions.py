@@ -6,13 +6,11 @@ import logging
 logger = logging.getLogger(__file__)
 
 
-def get_questions():
-    qa_dir=''
-    if len(sys.argv) > 1:
-        if os.path.isdir(sys.argv[1]):
-            qa_dir = sys.argv[1]
-        else:
-            logger.error(f'{sys.argv[1]} is not valid directory path')
+def get_questions(qa_dir=None):
+    if qa_dir:
+        if not os.path.isdir(qa_dir):
+            logger.error(f'{qa_dir} is not valid directory path')
+            qa_dir = None
     if not qa_dir:
         if os.path.isdir('QA'):
             logger.info('Using default Q&A path')
