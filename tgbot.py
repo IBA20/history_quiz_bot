@@ -1,7 +1,6 @@
 import logging
 import os
 import redis
-import sys
 
 from telegram.ext import (
     Updater, 
@@ -15,6 +14,7 @@ from random import choice
 from enum import Enum
 from dataclasses import dataclass
 from functools import partial
+from argparse import ArgumentParser
 
 from questions import get_questions, is_answer_correct
 
@@ -106,13 +106,17 @@ def main():
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
-    if len(sys.argv) > 1:
-        questions = get_questions(sys.argv[1])
-    else:
-        questions = get_questions()
+    argparse = ArgumentParser()
+    argparse.add_argument('--qa_dir', default=os.getenv('QA_DIR', 'QA'))
+    args = argparse.parse_args()
+    if not os.path.isdir(args.qa_dir):
+        logging.error('Q&A dir not found')
+        exit()
+        
+    questions = get_questions(args.qa_dir)
     if not questions:
         logger.error('Questions not found')
-        return
+        exit()
     
     # Open Redis DB connection
     pool = redis.ConnectionPool.from_url(os.environ['REDIS_URL'])

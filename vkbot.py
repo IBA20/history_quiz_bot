@@ -2,11 +2,11 @@ import os
 import logging
 import vk_api as vk
 import redis
-import sys
 from random import choice
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.utils import get_random_id
+from argparse import ArgumentParser
 
 from questions import get_questions, is_answer_correct
 
@@ -76,13 +76,19 @@ def handle_user_message(event, vk_api, questions, storage, keyboard):
 def main():
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
-    if len(sys.argv) > 1:
-        questions = get_questions(sys.argv[1])
-    else:
-        questions = get_questions()
+    
+    argparse = ArgumentParser()
+    argparse.add_argument('--qa_dir', default=os.getenv('QA_DIR', 'QA'))
+    args = argparse.parse_args()
+    if not os.path.isdir(args.qa_dir):
+        logging.error('Q&A dir not found')
+        exit()
+        
+    questions = get_questions(args.qa_dir)
     if not questions:
         logger.error('Questions not found')
-        return
+        exit()
+        
     pool = redis.ConnectionPool.from_url(os.environ['REDIS_URL'])
     storage = redis.Redis(connection_pool=pool)
     

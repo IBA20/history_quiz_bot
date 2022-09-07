@@ -1,23 +1,11 @@
 import re
 import os
-import sys
 import logging
 
 logger = logging.getLogger(__file__)
 
 
 def get_questions(qa_dir=None):
-    if qa_dir:
-        if not os.path.isdir(qa_dir):
-            logger.error(f'{qa_dir} is not valid directory path')
-            qa_dir = None
-    if not qa_dir:
-        if os.path.isdir('QA'):
-            logger.info('Using default Q&A path')
-            qa_dir = 'QA'
-    else:
-        logger.error('Q&A path not found')
-    
     questions = {}
     if qa_dir:
         for filename in os.listdir(qa_dir):
